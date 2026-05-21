@@ -1,16 +1,28 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class playerScript : MonoBehaviour
+public class PlayerCollect : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public float collectDistance = 5f;
+    public LayerMask collectibleLayer;
+    public PlayerScore playerScore;
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            Ray ray = new Ray(transform.position + Vector3.up, transform.forward);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, collectDistance, collectibleLayer))
+            {
+                Collectible c = hit.collider.GetComponent<Collectible>();
+                if (c != null)
+                {
+                    playerScore.AddScore(c.scoreValue);
+                    Destroy(hit.collider.gameObject);
+                }
+            }
+        }
     }
 }
