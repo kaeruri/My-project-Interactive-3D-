@@ -7,6 +7,8 @@ public class PlayerCollect : MonoBehaviour
     public LayerMask collectibleLayer;
     public PlayerScore playerScore;
 
+    AudioSource collectibleAudio;
+
     void Update()
     {
         if (Keyboard.current.eKey.wasPressedThisFrame)
@@ -20,7 +22,7 @@ public class PlayerCollect : MonoBehaviour
                 if (c != null)
                 {
                     playerScore.AddScore(c.scoreValue);
-                    Destroy(hit.collider.gameObject);
+                    c.Collect();
                 }
             }
         }
